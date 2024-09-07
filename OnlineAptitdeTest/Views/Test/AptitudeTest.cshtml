@@ -1,0 +1,76 @@
+﻿@model dynamic
+
+@{
+    ViewData["Title"] = "Aptitude Test";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<h1 class="text-center">@Model.TestName</h1>
+
+<form id="submitForm" asp-action="UserSelectAnswers" method="post" onsubmit="return validateForm();">
+    <input type="hidden" name="testId" value="@ViewBag.TestId" />
+    @foreach (var question in Model.Questions)
+    {
+        <div class="d-flex justify-content-between align-items-center mb-3">
+            <div class="form-group">
+                <label>@question.QuestionText</label>
+                <div>
+                    <div class="form-check">
+                        <input type="radio" name="Answers[@question.QuestionId]" value="A" id="optionA_@question.QuestionId" class="form-check-input" />
+                        <label for="optionA_@question.QuestionId" class="form-check-label">@question.OptionA</label>
+                    </div>
+                    <div class="form-check">
+                        <input type="radio" name="Answers[@question.QuestionId]" value="B" id="optionB_@question.QuestionId" class="form-check-input" />
+                        <label for="optionB_@question.QuestionId" class="form-check-label">@question.OptionB</label>
+                    </div>
+                    <div class="form-check">
+                        <input type="radio" name="Answers[@question.QuestionId]" value="C" id="optionC_@question.QuestionId" class="form-check-input" />
+                        <label for="optionC_@question.QuestionId" class="form-check-label">@question.OptionC</label>
+                    </div>
+                    <div class="form-check">
+                        <input type="radio" name="Answers[@question.QuestionId]" value="D" id="optionD_@question.QuestionId" class="form-check-input" />
+                        <label for="optionD_@question.QuestionId" class="form-check-label">@question.OptionD</label>
+                    </div>
+                </div>
+            </div>
+            <span>[5 Marks]</span>
+        </div>
+    }
+    <div class="text-center mt-4">
+        <button type="submit" class="btn btn-primary">Submit Answers</button>
+    </div>
+    @if (ViewBag.ShowTimer == true)
+    {
+        <div class="flex-grow-1 d-flex justify-content-center align-items-end mb-3">
+            <span class="nav-link" id="timer">Your Timer Here</span>
+        </div>
+    }
+</form>
+
+<script>
+    // Function to validate the form
+    function validateForm() {
+        const questions = @Html.Raw(Newtonsoft.Json.JsonConvert.SerializeObject(Model.Questions));
+        for (let question of questions) {
+            const radios = document.getElementsByName(`Answers[${question.QuestionId}]`);
+            const isChecked = Array.from(radios).some(radio => radio.checked);
+            if (!isChecked) {
+                alert(`Please answer question: ${question.QuestionText}`);
+                return false; // Prevent form submission
+            }
+        }
+        return true; // Allow form submission if all questions are answered
+    }
+
+    // Delay in milliseconds (e.g., 60 seconds)
+    const delay = 180000; // 60 seconds
+
+    // Use setTimeout to delay the form submission
+    setTimeout(function () {
+        alert('Time is up! Your test will be submitted.');
+        // Submit the form programmatically after the delay
+        if (validateForm()) {
+            document.getElementById('submitForm').submit();
+        }
+    }, delay);
+</script>

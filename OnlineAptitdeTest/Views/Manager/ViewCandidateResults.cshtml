@@ -1,0 +1,73 @@
+﻿@model List<OnlineAptitdeTest.Models.ViewModels.CandidateResultViewModel>
+
+@{
+    ViewBag.Title = "All Candidate Results";
+    Layout = "~/Views/Shared/_ManagerLayout.cshtml";
+}
+
+<h2 class="text-center mb-5">All Candidate Results</h2>
+
+<div class="table-responsive">
+    <table class="table table-striped">
+        <thead>
+            <tr>
+                <th>Candidate Name</th>
+                <th>Test Name</th>
+                <th>Marks In Each Subject</th>
+                <th>Passed</th>
+                <th>Obtained Marks</th>
+                <th>Total Marks</th>
+                <th>Percentage</th>
+                <th>Transfer Result To HR</th>
+            </tr>
+        </thead>
+        <tbody>
+            @if (Model != null && Model.Any())
+            {
+                foreach (var candidateResult in Model)
+                {
+                    foreach (var result in candidateResult.Results)
+                    {
+                        <tr>
+                            <td>@candidateResult.Candidate.Username</td>
+                            <td>@result.TestName</td>
+                            <td>@result.TotalMarks</td>
+                            <td>@(result.IsPassed ? "Yes" : "No")</td>
+
+
+                            @if (result == candidateResult.Results.First()) 
+                            {
+                                <td>@candidateResult.TotalScore</td>
+                                <td>75</td>
+                                <td>@candidateResult.Percentage.ToString("F2") %</td>
+                                <td><a class="btn btn-success" asp-action="Transfer" asp-controller="Manager">Transfer</a></td>
+                            }
+                            else
+                            {
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                                <td></td>
+                            }
+                        </tr>
+                        
+
+                        <tr>
+                            <td colspan="8" style="height: 20px;"></td> <!-- Adjust height as needed for spacing -->
+                        </tr>
+                    }
+
+                }
+            }
+
+
+            else
+            {
+                <tr>
+                    <td colspan="6">No results found for any candidates.</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+
+</div>

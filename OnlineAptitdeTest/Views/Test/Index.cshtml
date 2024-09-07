@@ -1,0 +1,78 @@
+﻿@model IEnumerable<OnlineAptitdeTest.Models.ViewModels.TestViewModel>
+
+@{
+    ViewData["Title"] = "Available Tests";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+
+<div class="text-center">
+    <h1 class="display-4">Welcome to the Aptitude Test Portal</h1>
+</div>
+
+
+<div class="container border p-3 m-4">
+
+
+    <div class="welcome-section-content">
+        <h3 class="section-title-welcome">Before You Begin:</h3>
+        <p>Welcome to the Aptitude Test Portal. Please read the following information before you start your test:</p>
+
+        <h4 class="section-title-welcome">Test Sections Overview:</h4>
+        <ul>
+            <li><strong>General Knowledge:</strong> Contains 5 questions. This is the first section you need to complete.</li>
+            <li><strong>Mathematics:</strong> This section will become available after you finish the General Knowledge section.</li>
+            <li><strong>Computer Technology:</strong> The final section of the test, which will be accessible after completing the Mathematics section.</li>
+        </ul>
+
+        <h4 class="section-title-welcome">Test Process:</h4>
+        <ul>
+            <li><strong>Sequential Access:</strong> You must complete each section in sequence. The next section will only become available after you finish the current one.</li>
+            <li><strong>Time Limit:</strong> Each section has a specific time limit for completion. Ensure you manage your time effectively.</li>
+            <li><strong>Submit Button:</strong> You can submit the section you are working on before the timer runs out. Once submitted, you cannot go back to previous sections.</li>
+            <li><strong>Marking Scheme:</strong> Each question is worth 5 marks. If time runs out and you have not selected an answer, the marks for that question will be counted as zero.</li>
+        </ul>
+
+        <h4 class="section-title-welcome">Test Rules:</h4>
+        <ul>
+            <li><strong>Changes to Answers:</strong> You can change your answers until you submit the section.</li>
+            <li><strong>Session Management:</strong> Ensure to log out after completing your test to secure your session.</li>
+        </ul>
+
+        <h4 class="section-title-welcome">Results:</h4>
+        <ul>
+            <li><strong>After Submitting All Tests:</strong> Your result will be displayed after you submit all sections of the test. If the test is not completed within the allotted time, unanswered questions will receive zero marks.</li>
+        </ul>
+
+    </div>
+
+    <div class="container" id="Box">
+
+
+
+        @if (Model != null && Model.Any())
+        {
+            foreach (var test in Model)
+            {
+
+                @if (test.TestId == 1)
+                {
+                    <form asp-controller="Test" asp-action="AptitudeTest" method="post">
+                        <input type="hidden" name="testId" value="@test.TestId" />
+                  
+                        <button type="submit" class="btn btn-success">Start Test</button>
+                    </form>
+                }
+            }
+        }
+        else
+        {
+            <p>No tests available.</p>
+        }
+
+        <form id="logoutForm" class="form-inline" asp-controller="Account" asp-action="Logout" method="post">
+            <input type="hidden" name="returnUrl" value="@Url.Action("Login", "Account")" />
+            <button type="submit" class="btn btn-primary">Logout</button>
+        </form>
+
+    </div>

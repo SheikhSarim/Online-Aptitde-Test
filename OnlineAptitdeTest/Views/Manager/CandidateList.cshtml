@@ -1,0 +1,52 @@
+﻿@model IEnumerable<OnlineAptitdeTest.Models.Candidate>
+
+@{
+    ViewData["Title"] = "CandidateList";
+    Layout = "~/Views/Shared/_ManagerLayout.cshtml";
+}
+
+<h1 class="text-center mb-5">All registered Candidates</h1>
+
+<p>
+    <a class="btn btn-primary" asp-action="CreateCandidate">Add New Candidate</a>
+</p>
+
+<div class="table-responsive">
+    <table class="table">
+        <thead>
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.Username)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Email)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.PasswordHash)
+                </th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Username)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Email)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.PasswordHash)
+                    </td>
+                    <td>
+                        <a class="btn btn-warning" asp-action="EditCandidate" asp-route-id="@item.CandidateId">Edit</a> |
+
+                        <a class="btn btn-danger" asp-action="DeleteCandidate" asp-route-id="@item.CandidateId">Delete</a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

@@ -1,0 +1,56 @@
+﻿@model IEnumerable<OnlineAptitdeTest.Models.ViewModels.ResultViewModel>
+
+@{
+    ViewData["Title"] = "Result";
+}
+
+<h1>Test Results</h1>
+
+<div class="container">
+    @if (!Model.Any())
+    {
+        <p>No results found.</p>
+    }
+    else
+    {
+       
+
+        <table class="table table-bordered">
+            <thead>
+                <tr>
+                    <th>Test Name</th>
+                    <th>Total Marks</th>
+                    <th>Obtained Marks</th>
+                    <th>Passed</th>
+                </tr>
+
+                
+            </thead>
+            <tbody>
+                @foreach (var result in Model)
+                {
+                    <tr>
+                        <td>@result.TestName</td>
+                        <td>25</td>
+                        <td>@result.TotalMarks</td>
+                        <td>@(result.IsPassed ? "Yes" : "No")</td>
+                    </tr>
+                }
+               
+            </tbody>
+            <tfoot>
+                <tr>
+                    <td><strong>Total</strong></td>
+                    <td><strong>75</strong></td>
+                    <td><strong>@Model.Sum(r => r.TotalMarks)</strong></td>
+                    <td> <strong> Percentage: </strong> @ViewBag.Percentage%</td>
+                </tr>
+            </tfoot>
+        </table>
+
+        <form id="logoutForm" class="form-inline" asp-controller="Account" asp-action="Logout" method="post">
+            <input type="hidden" name="returnUrl" value="@Url.Action("Login", "Account")" />
+            <button type="submit" class="btn btn-primary text-dark">Logout</button>
+        </form>
+    }
+</div>
